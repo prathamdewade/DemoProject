@@ -1,6 +1,5 @@
 
-
-
+using Microsoft.Extensions.Options;
 using StudentApi.Repository;
 using StudentApi.Services;
 
@@ -20,6 +19,16 @@ namespace StudentApi
             builder.Services.AddSwaggerGen();
             builder.Services.AddScoped<StudentRepository>();
             builder.Services.AddScoped<StudentService>();
+            //add cors 
+            builder.Services.AddCors(
+               op =>
+               {
+                   op.AddPolicy("AllowAll", policy =>
+                    policy.AllowAnyOrigin()   // Allow any URL (frontend)
+                    .AllowAnyMethod()   // Allow GET, POST, PUT, DELETE
+                     .AllowAnyHeader()); 
+               }
+               );
 
             var app = builder.Build();
 
@@ -33,7 +42,7 @@ namespace StudentApi
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
+            app.UseCors("AllowAll");
             app.MapControllers();
 
             app.Run();

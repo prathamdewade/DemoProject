@@ -27,5 +27,29 @@ namespace StudentApi.Repository
             return res > 0;
 
         }
+
+        public IList<Student> GetAllStudents()
+        {
+            IList<Student> slist = new List<Student>();
+            SqlConnection con = AppDbContext.GetDatabaseConnection(conString);
+            con.Open();
+            SqlCommand cmd = new SqlCommand("spCrudStud", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@action", SqlDbType.VarChar).Value = "Select";
+            SqlDataReader reader=cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Student s = new Student();
+                s.Id = reader.GetInt32(0);
+                s.Name= reader.GetString(1);
+                s.Marks = reader.GetDecimal(2);
+
+                slist.Add(s);
+
+            }
+            con.Close();
+            return slist;
+
+        }
     }
 }

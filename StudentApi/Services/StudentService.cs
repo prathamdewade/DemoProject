@@ -14,5 +14,10 @@ namespace StudentApi.Services
         {
             return repo.AddStudent(s);
         }
+
+        public IList<Student> GetAllStudents()
+        {
+            return repo.GetAllStudents();
+        }
     }
 }
