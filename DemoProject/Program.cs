@@ -1,39 +1,39 @@
 ﻿
 
-using DemoProject.Linq;
-using DemoProject.Services;
 
-class Program
+using DemoProject.DAL;
+using DemoProject.Model;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace DemoProject
 {
-   public  class A
+    public class Program
     {
-       public int value;
-       public A(int val)
+       public static void Main(string[] args)
         {
-            this.value = val;
+            //insert Operation 
+            Student s=UI("insert");
+            StudentRepository dao = new StudentRepository();
+            var res=dao.AddStudent(s);
+            Console.WriteLine( res ? "Data Added" : "Data Not Added");
+         
         }
-        public static A operator+ (A a, A b)
+        public static Student UI(string type="update")
         {
-            return new A(a.value +b.value);
-        }
-        public static A operator-(A a, A b)
-        {
-            return new A(a.value - b.value );
-        }
-        public static A operator*(A a, A b)
-        {
-            return new A(a.value * b.value);
-        }
+            Student s = new Student();
+            if (type.Equals("update"))
+            {
+                Console.WriteLine("Enter Student Id For Updation");
+                s.Id= int.Parse(Console.ReadLine());
+            }
+            Console.WriteLine("Enter Name"); ;
+            s.Name = Console.ReadLine();
+            Console.WriteLine("Enter Marks");
+            s.Marks=Decimal.Parse(Console.ReadLine());
+            return s;
 
-    }
-     public static void Main(string[] a)
-    {
-        //BankApplication.App();
-        A a1 = new A(10);
-        A a2 = new A(20);
-          A a3= a1 + a2;
-        Console.WriteLine(a3.value);
-        A a4 = a2 - a1;
-        Console.WriteLine(a4.value);
+
+        }
     }
 }
