@@ -1,39 +1,32 @@
 ﻿
 
 
+using DemoProject.BLL;
 using DemoProject.DAL;
 using DemoProject.Model;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace DemoProject
 {
     public class Program
     {
-       public static void Main(string[] args)
+       public static async Task Main(string[] args)
         {
-            //insert Operation 
-            Student s=UI("insert");
-            StudentRepository dao = new StudentRepository();
-            var res=dao.AddStudent(s);
-            Console.WriteLine( res ? "Data Added" : "Data Not Added");
-         
-        }
-        public static Student UI(string type="update")
-        {
-            Student s = new Student();
-            if (type.Equals("update"))
+            IUserService userService = new UserService();
+            User user = new User()
             {
-                Console.WriteLine("Enter Student Id For Updation");
-                s.Id= int.Parse(Console.ReadLine());
-            }
-            Console.WriteLine("Enter Name"); ;
-            s.Name = Console.ReadLine();
-            Console.WriteLine("Enter Marks");
-            s.Marks=Decimal.Parse(Console.ReadLine());
-            return s;
+                FullName = "raju",
+                Email = "rrr@gmail.com",
+                Password = "pass123"
+            };
 
+            //var res = await userService.Register(user);
+            //Console.WriteLine(res ? "Data Register" : "Data not Register");
 
+            var res=await userService.Login(user.Email, user.Password);
+            Console.WriteLine( res ? "Login Successful" : "Login Failed");
         }
     }
 }
